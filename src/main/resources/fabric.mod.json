@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "slime_mould",
+  "version": "${version}",
+  "name": "Slime Mould",
+  "description": "Minigame where you are a slime mould and must expand!",
+  "authors": ["Gegy"],
+  "license": "LGPLv3",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["xyz.nucleoid.slime_mould.SlimeMould"]
+  },
+  "depends": {
+    "fabricloader": ">=0.9.1",
+    "fabric": "*",
+    "minecraft": "1.16.x",
+    "plasmid": "0.4.x"
+  }
+}
