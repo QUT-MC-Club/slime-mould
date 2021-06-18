@@ -166,7 +166,7 @@ public final class SlimeMouldActive {
     }
 
     private void spawnInitialFood() {
-        int foodCount = this.gameSpace.getPlayerCount() * this.config.initialFoodSpawn;
+        int foodCount = this.getTargetFoodCount();
 
         int i = 0;
         while (i < foodCount) {
@@ -200,8 +200,7 @@ public final class SlimeMouldActive {
     }
 
     private void tickFood(long time) {
-        long interval = this.config.foodSpawnInterval / this.playerToMould.size();
-        if (time - this.lastFoodSpawnTime >= interval) {
+        if (time - this.lastFoodSpawnTime >= 20 && this.food.getCount() < this.getTargetFoodCount()) {
             if (this.trySpawnFood()) {
                 this.lastFoodSpawnTime = time;
             }
@@ -292,7 +291,7 @@ public final class SlimeMouldActive {
         }
 
         SlimeMouldPlate.Surface surface = this.map.getPlate().testSurface(world, pos);
-        if (!surface.isOnPlate() || !this.hasAdjacentMould(pos, mould)) {
+        if (!surface.isSterile() || !this.hasAdjacentMould(pos, mould)) {
             return false;
         }
 
@@ -305,7 +304,9 @@ public final class SlimeMouldActive {
     }
 
     private void growInto(ServerPlayerEntity player, Mould mould, BlockPos pos) {
-        player.getItemCooldownManager().set(GROWTH_ITEM, this.config.growCooldown);
+        if (this.config.growCooldown > 0) {
+            player.getItemCooldownManager().set(GROWTH_ITEM, this.config.growCooldown);
+        }
 
         if (this.food.removeFoodAt(pos.up())) {
             player.playSound(SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -320,6 +321,7 @@ public final class SlimeMouldActive {
         player.world.setBlockState(pos, mould.block);
         mould.score++;
 
+        this.updateFoodBar(player, mould);
         this.updateSidebar();
     }
 
@@ -383,13 +385,6 @@ public final class SlimeMouldActive {
     private boolean takeFoodFrom(Mould mould) {
         if (mould.food > 0) {
             mould.food--;
-
-            PlayerSet players = this.gameSpace.getPlayers();
-            ServerPlayerEntity player = players.getEntity(mould.player.getId());
-            if (player != null) {
-                this.updateFoodBar(player, mould);
-            }
-
             return true;
         } else {
             this.eliminate(mould);
@@ -405,6 +400,10 @@ public final class SlimeMouldActive {
                             .formatted(Formatting.RED)
             );
         }
+    }
+
+    private int getTargetFoodCount() {
+        return this.playerToMould.size() * this.config.foodSpawnPerPlayer;
     }
 
     static final class Mould {

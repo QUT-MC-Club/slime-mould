@@ -99,6 +99,10 @@ public final class SlimeMouldFood implements Iterable<SlimeMouldFood.Instance> {
         return this.food.values().iterator();
     }
 
+    public int getCount() {
+        return this.food.size();
+    }
+
     public static final class Instance {
         public final BlockPos position;
         private final int entityId;
