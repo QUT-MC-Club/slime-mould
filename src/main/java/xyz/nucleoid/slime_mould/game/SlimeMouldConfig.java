@@ -13,7 +13,7 @@ public final class SlimeMouldConfig {
                 Codec.LONG.optionalFieldOf("food_spawn_interval", 8 * 20L).forGetter(config -> config.foodSpawnInterval),
                 Codec.INT.optionalFieldOf("initial_food_level", 20).forGetter(config -> config.initialFoodLevel),
                 Codec.INT.optionalFieldOf("food_level_per_food", 10).forGetter(config -> config.foodLevelPerFood),
-                Codec.INT.optionalFieldOf("grow_cooldown", 20).forGetter(config -> config.growCooldown),
+                Codec.INT.optionalFieldOf("grow_cooldown", 10).forGetter(config -> config.growCooldown),
                 PlayerConfig.CODEC.fieldOf("players").forGetter(config -> config.players)
         ).apply(instance, SlimeMouldConfig::new);
     });
