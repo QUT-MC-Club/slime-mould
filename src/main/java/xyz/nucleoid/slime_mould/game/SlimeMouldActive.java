@@ -296,7 +296,7 @@ public final class SlimeMouldActive {
             return false;
         }
 
-        if (surface.isMould() || this.takeFoodFrom(mould)) {
+        if (this.takeFoodFrom(mould)) {
             this.growInto(player, mould, pos);
             return true;
         } else {
@@ -313,12 +313,8 @@ public final class SlimeMouldActive {
         }
 
         Mould existingMould = this.getMouldFor(player.world.getBlockState(pos));
-        if (existingMould != null) {
-            this.takeFoodFrom(existingMould);
-
-            if (--existingMould.score <= 0) {
-                this.eliminate(existingMould);
-            }
+        if (existingMould != null && --existingMould.score <= 0) {
+            this.eliminate(existingMould);
         }
 
         player.world.setBlockState(pos, mould.block);
