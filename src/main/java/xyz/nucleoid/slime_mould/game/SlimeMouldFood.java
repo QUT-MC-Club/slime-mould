@@ -9,12 +9,14 @@ import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import xyz.nucleoid.plasmid.game.GameLogic;
 import xyz.nucleoid.plasmid.game.GameSpace;
 import xyz.nucleoid.plasmid.game.event.PlayerAddListener;
 import xyz.nucleoid.plasmid.game.event.PlayerRemoveListener;
 
 import java.util.Iterator;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class SlimeMouldFood implements Iterable<SlimeMouldFood.Instance> {
     private final GameSpace gameSpace;
@@ -77,6 +79,7 @@ public final class SlimeMouldFood implements Iterable<SlimeMouldFood.Instance> {
     private void sendFoodTo(Instance food, ServerPlayerEntity player) {
         SlimeEntity entity = this.slimeEntity;
         entity.setEntityId(food.entityId);
+        entity.setUuid(MathHelper.randomUuid(ThreadLocalRandom.current()));
         entity.setPos(food.position.getX() + 0.5, food.position.getY(), food.position.getZ() + 0.5);
 
         ServerPlayNetworkHandler networkHandler = player.networkHandler;

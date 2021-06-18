@@ -60,7 +60,7 @@ public final class SlimeMouldMapBuilder {
                 BlockState surface = template.getBlockState(surfacePos);
                 BlockState above = template.getBlockState(abovePos.set(surfacePos, Direction.UP));
 
-                if (SlimeMouldPlate.testSurface(surface.getBlock()).isOnPlate() || !above.isAir()) {
+                if (!SlimeMouldPlate.testSurface(surface.getBlock()).isOnPlate() || !above.isAir()) {
                     plateRadius = x;
                     break;
                 }
