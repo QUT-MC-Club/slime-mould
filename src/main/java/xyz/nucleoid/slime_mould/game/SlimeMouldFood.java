@@ -16,7 +16,7 @@ import xyz.nucleoid.plasmid.game.event.PlayerAddListener;
 import xyz.nucleoid.plasmid.game.event.PlayerRemoveListener;
 
 import java.util.Iterator;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 public final class SlimeMouldFood implements Iterable<SlimeMouldFood.Instance> {
     private final GameSpace gameSpace;
@@ -77,10 +77,13 @@ public final class SlimeMouldFood implements Iterable<SlimeMouldFood.Instance> {
     }
 
     private void sendFoodTo(Instance food, ServerPlayerEntity player) {
+        Random random = player.world.random;
+
         SlimeEntity entity = this.slimeEntity;
         entity.setEntityId(food.entityId);
-        entity.setUuid(MathHelper.randomUuid(ThreadLocalRandom.current()));
+        entity.setUuid(MathHelper.randomUuid(random));
         entity.setPos(food.position.getX() + 0.5, food.position.getY(), food.position.getZ() + 0.5);
+        entity.setYaw(random.nextFloat() * 360.0F);
 
         ServerPlayNetworkHandler networkHandler = player.networkHandler;
         networkHandler.sendPacket(entity.createSpawnPacket());

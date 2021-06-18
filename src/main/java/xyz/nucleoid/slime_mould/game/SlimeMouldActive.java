@@ -315,12 +315,15 @@ public final class SlimeMouldActive {
         Mould existingMould = this.getMouldFor(player.world.getBlockState(pos));
         if (existingMould != null) {
             this.takeFoodFrom(existingMould);
+
+            if (--existingMould.score <= 0) {
+                this.eliminate(existingMould);
+            }
         }
 
         player.world.setBlockState(pos, mould.block);
         mould.score++;
 
-        this.updateFoodBar(player, mould);
         this.updateSidebar();
     }
 
@@ -384,6 +387,13 @@ public final class SlimeMouldActive {
     private boolean takeFoodFrom(Mould mould) {
         if (mould.food > 0) {
             mould.food--;
+
+            PlayerSet players = this.gameSpace.getPlayers();
+            ServerPlayerEntity player = players.getEntity(mould.player.getId());
+            if (player != null) {
+                this.updateFoodBar(player, mould);
+            }
+
             return true;
         } else {
             this.eliminate(mould);
