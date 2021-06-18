@@ -296,7 +296,7 @@ public final class SlimeMouldActive {
             return false;
         }
 
-        if (!surface.isMould() || this.takeFoodFrom(mould)) {
+        if (surface.isMould() || this.takeFoodFrom(mould)) {
             this.growInto(player, mould, pos);
             return true;
         } else {
