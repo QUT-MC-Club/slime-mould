@@ -11,9 +11,9 @@
     "main": ["xyz.nucleoid.slime_mould.SlimeMould"]
   },
   "depends": {
-    "fabricloader": ">=0.9.1",
+    "fabricloader": ">=0.15",
     "fabric": "*",
     "minecraft": ">=1.20.3-",
-    "plasmid": "0.5.x"
+    "plasmid": ">=0.5.0"
   }
 }
